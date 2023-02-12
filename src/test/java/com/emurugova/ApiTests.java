@@ -27,7 +27,7 @@ public class ApiTests {
                 .then()
                 .statusCode(200)
                 .body("data.id", is(user));
-}
+    }
 
     @Test
     void getSingleUserWithAssertInteger () {
@@ -101,6 +101,31 @@ public class ApiTests {
                 .statusCode(204);
     }
 
+    @Test
+    void postRegisterSuccessful () {
+        String data = "{ \"email\": \"eve.holt@reqres.in\", \"password\": \"pistol\"}";
+        given()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("/api/register")
+                .then()
+                .statusCode(200)
+                .body("token", is("QpwL5tke4Pnpja7X4"));
+    }
+
+    @Test
+    void postRegisterUnsuccessful () {
+        String data = "{ \"email\": \"sydney@fife\"}";
+        given()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("/api/register")
+                .then()
+                .statusCode(400)
+                .body("error", is("Missing password"));
+    }
 }
 
 
